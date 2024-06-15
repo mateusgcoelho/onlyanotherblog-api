@@ -3,10 +3,12 @@ package app
 import (
 	"fmt"
 	"onlyanotherblog/config"
-	database "onlyanotherblog/database/sqlc"
 	v1Posts "onlyanotherblog/internal/posts/http/v1"
 	v1Users "onlyanotherblog/internal/users/http/v1"
 
+	database "onlyanotherblog/database/sqlc"
+
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -25,6 +27,11 @@ func NewApp(ginEngine *gin.Engine, serverConfig *config.ServerConfig, databaseRe
 }
 
 func (app *app) Run() error {
+	app.ginEngine.Use(cors.New(cors.Config{
+		AllowAllOrigins: true,
+		AllowHeaders:    []string{"Cross-Origin, Access-Control-Allow-Origin"},
+	}))
+
 	usersHandler := v1Users.UsersHandler{
 		DatabaseRepository: app.databaseRepository,
 	}
