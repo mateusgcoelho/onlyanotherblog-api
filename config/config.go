@@ -12,7 +12,7 @@ type (
 	}
 )
 
-func LoadServerConfig() (ServerConfig, error) {
+func LoadServerConfig() (*ServerConfig, error) {
 	serverConfig := ServerConfig{}
 
 	viper.AddConfigPath(".")
@@ -22,12 +22,12 @@ func LoadServerConfig() (ServerConfig, error) {
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {
-		return serverConfig, fmt.Errorf("error reading env file, %v", err)
+		return &serverConfig, fmt.Errorf("error reading env file, %v", err)
 	}
 
 	if err := viper.Unmarshal(&serverConfig); err != nil {
-		return serverConfig, fmt.Errorf("unknow error, %v", err)
+		return &serverConfig, fmt.Errorf("unknow error, %v", err)
 	}
 
-	return serverConfig, nil
+	return &serverConfig, nil
 }

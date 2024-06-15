@@ -15,7 +15,7 @@ func main() {
 	}
 
 	ginEngine := gin.Default()
-	app := app.NewApp(ginEngine, &serverConfig)
+	app := app.NewApp(ginEngine, serverConfig)
 
 	if err := app.Run(); err != nil {
 		log.Fatal(err)
