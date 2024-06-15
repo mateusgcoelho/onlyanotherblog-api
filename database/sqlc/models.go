@@ -8,6 +8,15 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+type Post struct {
+	ID        string           `json:"id"`
+	Title     pgtype.Text      `json:"title"`
+	Content   pgtype.Text      `json:"content"`
+	UserID    pgtype.Text      `json:"user_id"`
+	CreatedAt pgtype.Timestamp `json:"created_at"`
+	UpdatedAt pgtype.Timestamp `json:"updated_at"`
+}
+
 type User struct {
 	ID        string           `json:"id"`
 	Username  pgtype.Text      `json:"username"`

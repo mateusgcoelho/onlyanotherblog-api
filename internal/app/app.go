@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"onlyanotherblog/config"
 	database "onlyanotherblog/database/sqlc"
-	v1 "onlyanotherblog/internal/users/http/v1"
+	v1Posts "onlyanotherblog/internal/posts/http/v1"
+	v1Users "onlyanotherblog/internal/users/http/v1"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,12 +25,18 @@ func NewApp(ginEngine *gin.Engine, serverConfig *config.ServerConfig, databaseRe
 }
 
 func (app *app) Run() error {
-	usersHandler := v1.UsersHandler{
+	usersHandler := v1Users.UsersHandler{
+		DatabaseRepository: app.databaseRepository,
+	}
+	postsHandler := v1Posts.PostsHandler{
 		DatabaseRepository: app.databaseRepository,
 	}
 
 	userGroup := app.ginEngine.Group("/users")
 	usersHandler.UserRoutes(userGroup)
+
+	postGroup := app.ginEngine.Group("/posts")
+	postsHandler.PostRoutes(postGroup)
 
 	port := fmt.Sprintf(":%v", app.serverConfig.ServerPort)
 	return app.ginEngine.Run(port)
