@@ -9,6 +9,12 @@ import (
 type (
 	ServerConfig struct {
 		ServerPort string `mapstructure:"SERVER_PORT"`
+
+		DatabaseHost     string `mapstructure:"DATABASE_HOST"`
+		DatabasePort     int    `mapstructure:"DATABASE_PORT"`
+		DatabaseUsername string `mapstructure:"DATABASE_USERNAME"`
+		DatabasePassword string `mapstructure:"DATABASE_PASSWORD"`
+		DatabaseName     string `mapstructure:"DATABASE_NAME"`
 	}
 )
 

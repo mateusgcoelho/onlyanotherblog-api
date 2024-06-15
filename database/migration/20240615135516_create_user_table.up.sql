@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS "users" (
-  "id" integer PRIMARY KEY,
+  "id" varchar PRIMARY KEY,
   "username" varchar(16) UNIQUE,
   "email" varchar(100),
   "password" varchar,
