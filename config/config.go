@@ -15,6 +15,8 @@ type (
 		DatabaseUsername string `mapstructure:"DATABASE_USERNAME"`
 		DatabasePassword string `mapstructure:"DATABASE_PASSWORD"`
 		DatabaseName     string `mapstructure:"DATABASE_NAME"`
+
+		SecretKeyToken string `mapstructure:"SECRET_KEY_TOKEN"`
 	}
 )
 

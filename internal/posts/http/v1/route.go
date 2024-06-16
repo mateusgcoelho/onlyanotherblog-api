@@ -1,11 +1,13 @@
 package v1
 
 import (
+	"onlyanotherblog/internal/auth/middlewares"
+
 	"github.com/gin-gonic/gin"
 )
 
-func (ph *PostsHandler) PostRoutes(group *gin.RouterGroup) {
-	group.GET("/", ph.getPosts)
-	group.GET("/:id", ph.getPost)
-	group.POST("/", ph.createPost)
+func (ph *PostsHandler) PostRoutes(group *gin.Engine) {
+	group.GET("/posts", ph.getPosts)
+	group.GET("/posts/:id", ph.getPost)
+	group.POST("/posts", middlewares.MiddlewareAuth(ph.TokenMaker), ph.createPost)
 }

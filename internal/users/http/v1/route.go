@@ -1,7 +1,12 @@
 package v1
 
-import "github.com/gin-gonic/gin"
+import (
+	"onlyanotherblog/internal/auth/middlewares"
 
-func (uh *UsersHandler) UserRoutes(group *gin.RouterGroup) {
-	group.POST("/", uh.createUser)
+	"github.com/gin-gonic/gin"
+)
+
+func (uh *UsersHandler) UserRoutes(router *gin.Engine) {
+	router.GET("/users/me", middlewares.MiddlewareAuth(uh.TokenMaker), uh.getUserByToken)
+	router.POST("/users/", uh.createUser)
 }

@@ -3,6 +3,7 @@ package v1
 import (
 	"net/http"
 	database "onlyanotherblog/database/sqlc"
+	"onlyanotherblog/internal/auth/token"
 	"onlyanotherblog/internal/posts/dtos"
 	"onlyanotherblog/pkg/utils"
 
@@ -12,6 +13,7 @@ import (
 
 type PostsHandler struct {
 	DatabaseRepository *database.DatabaseRepository
+	TokenMaker         token.Maker
 }
 
 func (ph *PostsHandler) getPosts(c *gin.Context) {
@@ -82,7 +84,7 @@ func (ph *PostsHandler) createPost(c *gin.Context) {
 			Valid:  true,
 		},
 		UserID: pgtype.Text{
-			String: "01J0ERCQFR1Y3Q5X78JPEVPX4D", // Alterar para id logado posteriomente
+			String: c.GetString("user_id"),
 			Valid:  true,
 		},
 	}
