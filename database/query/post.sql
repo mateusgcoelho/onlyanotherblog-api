@@ -10,7 +10,7 @@ SELECT
 FROM posts AS p
 INNER JOIN users AS u ON u.id = p.user_id
 WHERE p.id > $1
-ORDER BY p.id ASC
+ORDER BY p.created_at DESC, p.id ASC
 FETCH FIRST $2 ROWS ONLY;
 
 -- name: GetPost :one

@@ -8,5 +8,5 @@ import (
 
 func (uh *UsersHandler) UserRoutes(router *gin.Engine) {
 	router.GET("/users/me", middlewares.MiddlewareAuth(uh.TokenMaker), uh.getUserByToken)
-	router.POST("/users/", uh.createUser)
+	router.POST("/users", uh.createUser)
 }

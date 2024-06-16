@@ -45,6 +45,7 @@ func (app *app) Run() error {
 	}
 	postsHandler := v1Posts.PostsHandler{
 		DatabaseRepository: app.databaseRepository,
+		TokenMaker:         *app.tokenMaker,
 	}
 
 	authHandler.AuthRoutes(app.ginEngine)
