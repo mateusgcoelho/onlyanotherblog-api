@@ -16,7 +16,7 @@ type DatabaseRepository struct {
 
 func NewDatabaseRepository(serverConfig config.ServerConfig) (*DatabaseRepository, error) {
 	databaseUrl := fmt.Sprintf(
-		"postgres://%s:%s@%s:%d/%s?sslmode=disable",
+		"postgres://%s:%s@%s:%s/%s?sslmode=disable",
 		serverConfig.DatabaseUsername, serverConfig.DatabasePassword, serverConfig.DatabaseHost, serverConfig.DatabasePort, serverConfig.DatabaseName,
 	)
 	conn, err := pgxpool.New(context.Background(), databaseUrl)
