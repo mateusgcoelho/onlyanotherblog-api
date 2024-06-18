@@ -127,3 +127,50 @@ func (q *Queries) GetPosts(ctx context.Context, arg GetPostsParams) ([]GetPostsR
 	}
 	return items, nil
 }
+
+const getPostsOfUser = `-- name: GetPostsOfUser :many
+SELECT
+    p.id as post_id, p.title as post_title, p.content as post_content,
+    p.created_at as post_created_at, p.updated_at as post_updated_at,
+    u.username as username
+FROM posts AS p
+INNER JOIN users AS u ON u.id = p.user_id
+WHERE u.username = $1
+ORDER BY p.created_at DESC
+`
+
+type GetPostsOfUserRow struct {
+	PostID        string           `json:"post_id"`
+	PostTitle     pgtype.Text      `json:"post_title"`
+	PostContent   pgtype.Text      `json:"post_content"`
+	PostCreatedAt pgtype.Timestamp `json:"post_created_at"`
+	PostUpdatedAt pgtype.Timestamp `json:"post_updated_at"`
+	Username      pgtype.Text      `json:"username"`
+}
+
+func (q *Queries) GetPostsOfUser(ctx context.Context, username pgtype.Text) ([]GetPostsOfUserRow, error) {
+	rows, err := q.db.Query(ctx, getPostsOfUser, username)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []GetPostsOfUserRow{}
+	for rows.Next() {
+		var i GetPostsOfUserRow
+		if err := rows.Scan(
+			&i.PostID,
+			&i.PostTitle,
+			&i.PostContent,
+			&i.PostCreatedAt,
+			&i.PostUpdatedAt,
+			&i.Username,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}

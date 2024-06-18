@@ -21,3 +21,13 @@ SELECT
 FROM posts AS p
 INNER JOIN users AS u ON u.id = p.user_id
 WHERE p.id = $1;
+
+-- name: GetPostsOfUser :many
+SELECT
+    p.id as post_id, p.title as post_title, p.content as post_content,
+    p.created_at as post_created_at, p.updated_at as post_updated_at,
+    u.username as username
+FROM posts AS p
+INNER JOIN users AS u ON u.id = p.user_id
+WHERE u.username = $1
+ORDER BY p.created_at DESC;

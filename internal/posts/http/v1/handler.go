@@ -64,6 +64,29 @@ func (ph *PostsHandler) getPost(c *gin.Context) {
 	c.JSON(http.StatusOK, utils.ReponseData(post))
 }
 
+func (ph *PostsHandler) getPostsOfUser(c *gin.Context) {
+	getPostsOfUserParams := dtos.GetPostsOfUserParam{}
+
+	if err := c.BindUri(&getPostsOfUserParams); err != nil {
+		responseError := utils.ResponseErrorStackTrace("occurred an erro in deserialization id param.", err.Error())
+		c.JSON(http.StatusBadRequest, responseError)
+		return
+	}
+
+	argGetPostsOfUser := pgtype.Text{
+		String: getPostsOfUserParams.Username,
+		Valid:  true,
+	}
+	posts, err := ph.DatabaseRepository.GetPostsOfUser(c, argGetPostsOfUser)
+	if err != nil {
+		responseError := utils.ResponseErrorMessage("occurred an error in get posts of user.")
+		c.JSON(http.StatusInternalServerError, responseError)
+		return
+	}
+
+	c.JSON(http.StatusOK, utils.ReponseData(posts))
+}
+
 func (ph *PostsHandler) createPost(c *gin.Context) {
 	createPostBody := dtos.CreatePostRequestBody{}
 
