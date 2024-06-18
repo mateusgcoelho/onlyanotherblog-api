@@ -64,7 +64,7 @@ func (ph *PostsHandler) getPost(c *gin.Context) {
 	c.JSON(http.StatusOK, utils.ReponseData(post))
 }
 
-func (ph *PostsHandler) getPostsOfUser(c *gin.Context) {
+func (ph *PostsHandler) getPostsByUsername(c *gin.Context) {
 	getPostsOfUserParams := dtos.GetPostsOfUserParam{}
 
 	if err := c.BindUri(&getPostsOfUserParams); err != nil {
@@ -77,6 +77,22 @@ func (ph *PostsHandler) getPostsOfUser(c *gin.Context) {
 		String: getPostsOfUserParams.Username,
 		Valid:  true,
 	}
+	posts, err := ph.DatabaseRepository.GetPostsOfUser(c, argGetPostsOfUser)
+	if err != nil {
+		responseError := utils.ResponseErrorMessage("occurred an error in get posts of user.")
+		c.JSON(http.StatusInternalServerError, responseError)
+		return
+	}
+
+	c.JSON(http.StatusOK, utils.ReponseData(posts))
+}
+
+func (ph *PostsHandler) getPostsOfUser(c *gin.Context) {
+	argGetPostsOfUser := pgtype.Text{
+		String: c.GetString("user_id"),
+		Valid:  true,
+	}
+
 	posts, err := ph.DatabaseRepository.GetPostsOfUser(c, argGetPostsOfUser)
 	if err != nil {
 		responseError := utils.ResponseErrorMessage("occurred an error in get posts of user.")

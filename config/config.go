@@ -1,12 +1,14 @@
 package config
 
 import (
-	"os"
+	"fmt"
+
+	"github.com/spf13/viper"
 )
 
 type (
 	ServerConfig struct {
-		ServerPort string `mapstructure:"PORT"`
+		ServerPort string `mapstructure:"SERVER_PORT"`
 
 		DatabaseHost     string `mapstructure:"DATABASE_HOST"`
 		DatabasePort     string `mapstructure:"DATABASE_PORT"`
@@ -19,28 +21,20 @@ type (
 )
 
 func LoadServerConfig() (*ServerConfig, error) {
-	serverConfig := ServerConfig{
-		ServerPort:       os.Getenv("PORT"),
-		DatabaseHost:     os.Getenv("DATABASE_HOST"),
-		DatabasePort:     os.Getenv("DATABASE_PORT"),
-		DatabaseUsername: os.Getenv("DATABASE_USERNAME"),
-		DatabasePassword: os.Getenv("DATABASE_PASSWORD"),
-		DatabaseName:     os.Getenv("DATABASE_NAME"),
-		SecretKeyToken:   os.Getenv("SECRET_KEY_TOKEN"),
+	serverConfig := ServerConfig{}
+
+	viper.AddConfigPath(".")
+	viper.SetConfigFile(".env")
+
+	viper.AutomaticEnv()
+
+	if err := viper.ReadInConfig(); err != nil {
+		return &serverConfig, fmt.Errorf("error reading env file, %v", err)
 	}
 
-	// viper.AddConfigPath(".")
-	// viper.SetConfigFile(".env")
-
-	// viper.AutomaticEnv()
-
-	// if err := viper.ReadInConfig(); err != nil {
-	// 	return &serverConfig, fmt.Errorf("error reading env file, %v", err)
-	// }
-
-	// if err := viper.Unmarshal(&serverConfig); err != nil {
-	// 	return &serverConfig, fmt.Errorf("unknow error, %v", err)
-	// }
+	if err := viper.Unmarshal(&serverConfig); err != nil {
+		return &serverConfig, fmt.Errorf("unknow error, %v", err)
+	}
 
 	return &serverConfig, nil
 }

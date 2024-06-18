@@ -29,5 +29,5 @@ SELECT
     u.username as username
 FROM posts AS p
 INNER JOIN users AS u ON u.id = p.user_id
-WHERE u.username = $1
+WHERE u.username = $1 OR u.id = $1
 ORDER BY p.created_at DESC;
