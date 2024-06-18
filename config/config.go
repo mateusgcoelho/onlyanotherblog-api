@@ -24,8 +24,7 @@ func LoadServerConfig() (*ServerConfig, error) {
 	serverConfig := ServerConfig{}
 
 	viper.AddConfigPath(".")
-	viper.SetConfigName("app")
-	viper.SetConfigType("env")
+	viper.SetConfigFile(".env")
 
 	viper.AutomaticEnv()
 

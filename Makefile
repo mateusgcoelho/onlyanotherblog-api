@@ -1,5 +1,5 @@
 run:
-	go run ./cmd/api/main.go
+	go run ./main.go
 
 migrate-up:
 	migrate -path ./database/migration/ -database postgres://postgres:Docker@localhost:5432/onlyanotherblog?sslmode=disable up
