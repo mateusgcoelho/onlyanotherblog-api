@@ -6,7 +6,7 @@ import (
 
 type (
 	ServerConfig struct {
-		ServerPort string `mapstructure:"SERVER_PORT"`
+		ServerPort string `mapstructure:"PORT"`
 
 		DatabaseHost     string `mapstructure:"DATABASE_HOST"`
 		DatabasePort     string `mapstructure:"DATABASE_PORT"`
@@ -20,7 +20,7 @@ type (
 
 func LoadServerConfig() (*ServerConfig, error) {
 	serverConfig := ServerConfig{
-		ServerPort:       os.Getenv("SERVER_PORT"),
+		ServerPort:       os.Getenv("PORT"),
 		DatabaseHost:     os.Getenv("DATABASE_HOST"),
 		DatabasePort:     os.Getenv("DATABASE_PORT"),
 		DatabaseUsername: os.Getenv("DATABASE_USERNAME"),
